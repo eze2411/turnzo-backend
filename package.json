@@ -1,0 +1,25 @@
+{
+  "name": "turnzo-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eze2411/turnzo-backend.git"
+  },
+  "author": "Leandro Furyk, Ezequiel Quintana, Manuel Tablado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eze2411/turnzo-backend/issues"
+  },
+  "homepage": "https://github.com/eze2411/turnzo-backend#readme",
+  "dependencies": {
+    "@types/express": "^4.17.1",
+    "express": "^4.17.1",
+    "typescript": "^3.4.3"
+  }
+}
