@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import Database from './clients/database'
 
 const app = express();
 const port = 3000; // default port to listen
@@ -14,6 +15,8 @@ app.get( "/", ( req, res ) => {
         message : "Hello World!"
     })
 } );
+
+console.log(Database.getInstance().query('SELECT * from user;').catch(err => console.log(err)))
 
 // start the express server
 app.listen( port, () => {
