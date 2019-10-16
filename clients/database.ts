@@ -2,6 +2,7 @@ import mysql from 'mysql'
 import { reject } from 'q'
 import { resolve } from 'dns'
 import { response } from 'express'
+import { disconnect } from 'cluster'
 
 export default class Database {
     private static _instance : Database
@@ -31,46 +32,38 @@ export default class Database {
     }
 
     async query(query : string) {
-        this.connection.connect((err)=>{
-            console.log(err)
-        })
 
-
-
-        return new Promise( (reject, resolve) =>{
+        return new Promise( (resolve, reject) =>{
             this.connection.query(query, function (error, results, fields) {
 
                 if (error) 
                     reject(error);
 
-                console.log(results);
-                resolve(results) 
+                resolve(results)
+                disconnect(); 
             })
-            this.connection.end();
         })
+    }
 
-       /* this.connection.query(query, function (error, results, fields) {
-
-            if (error) 
-                callback(error, null);
-
-            console.log(results);
-            callback(null,results) 
+    async connect(){
+        return new Promise( (resolve,reject) =>{
+            this.connection.connect((err)=>{
+                if(err) {
+                    reject(err)
+                }
+                resolve();
+            })
         })
-        this.connection.end();
-        
-        , callback : (err : any, response : any) => void*/
+    }
+
+    async disconnect(){
+        return new Promise( (resolve,reject) =>{
+            this.connection.end((err)=>{
+                if(err) {
+                    reject(err)
+                }
+                resolve();
+            })
+        })
     }
 }
-
-/*return new Promise( (reject, resolve) =>{
-            this.connection.query(query, function (error, results, fields) {
-
-                if (error) 
-                    reject(error);
-
-                console.log(results);
-                resolve(results) 
-            })
-            this.connection.end();
-        })*/

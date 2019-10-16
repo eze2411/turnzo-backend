@@ -1,4 +1,9 @@
 import express from 'express'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import Database from '../../clients/database'
+import UserRepository from '../../repository/UserRepository'
+
 const app = express()
 
 app.use(express.json()) // for parsing application/json
@@ -15,6 +20,46 @@ app.post('/', (req, res) =>{
 
     //Now you must check on the SQL that the email exists, if it exists, return the entire register
     let password = req.body.password
+    if(!password){
+        res.status(400).json({
+            error: "You must provide a password."
+        });
+    }
+    UserRepository.findByEmail(email)
+    .then(results => {
+        let response = JSON.parse(JSON.stringify(results));
+
+        if ( !bcrypt.compareSync(password, response[0].pass) ){
+            return res.status(400).json({
+              ok: false,
+              err: {
+              message: 'Usuario o (Contraseña) inconrrecta'
+              }
+            })
+          }
+      
+          let token = jwt.sign({
+            usuario: {
+                email : email,
+                role : response[0].role
+            }
+          }, 'TEST_SEED', {expiresIn: '48h' })
+      
+          res.json({
+            ok: true,
+            usuario: {
+                email : email,
+                role : response[0].role
+            },
+            token
+          })
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: "There was an error while login the user"        
+        })
+    })
 })
 
 module.exports = app;
