@@ -1,7 +1,4 @@
 import mysql from 'mysql'
-import { reject } from 'q'
-import { resolve } from 'dns'
-import { response } from 'express'
 import { disconnect } from 'cluster'
 
 export default class Database {
