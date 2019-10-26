@@ -1,6 +1,5 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
-import Database from '../../clients/database'
 import User from '../../DTO/User'
 import UserRepository from '../../repository/UserRepository'
 
@@ -26,10 +25,8 @@ app.post('/', (req, res) =>{
     let password = bcrypt.hashSync(req.body.password,10)
 
     let user : User = new User(null,email,password,req.body.firstName,req.body.lastName, req.body.birthdate, role)
-    //Database.getInstance().query(`INSERT INTO user (email,pass,role) VALUES ("${email}","${password}","${role}")`)
     UserRepository.insertUser(user)
-    .then(results => {
-        console.log(results)
+    .then(() => {
 
         res.status(200).json({
             status : 'OK',

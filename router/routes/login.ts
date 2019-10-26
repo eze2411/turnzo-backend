@@ -26,10 +26,9 @@ app.post('/', (req, res) =>{
         });
     }
     UserRepository.findByEmail(email)
-    .then(results => {
-        let response = JSON.parse(JSON.stringify(results));
+    .then(result => {
 
-        if ( !bcrypt.compareSync(password, response[0].pass) ){
+        if ( !bcrypt.compareSync(password, result.getPassword()!) ){
             return res.status(400).json({
               ok: false,
               err: {
@@ -41,7 +40,7 @@ app.post('/', (req, res) =>{
           let token = jwt.sign({
             usuario: {
                 email : email,
-                role : response[0].role
+                role : result.getRole()
             }
           }, 'TEST_SEED', {expiresIn: '48h' })
       
@@ -49,7 +48,7 @@ app.post('/', (req, res) =>{
             ok: true,
             usuario: {
                 email : email,
-                role : response[0].role
+                role : result.getRole()
             },
             token
           })
