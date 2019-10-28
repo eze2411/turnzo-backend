@@ -1,10 +1,10 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import Database from '../../clients/database'
 import UserRepository from '../../repository/UserRepository'
 
 const app = express()
+const SEED = 'TEST_SEED';
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
@@ -42,7 +42,7 @@ app.post('/', (req, res) =>{
                 email : email,
                 role : result.getRole()
             }
-          }, 'TEST_SEED', {expiresIn: '48h' })
+          }, SEED, {expiresIn: '48h' })
       
           res.json({
             ok: true,

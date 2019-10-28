@@ -14,7 +14,7 @@ export default class UserRepository {
 
     public static async findByEmail(email : string) : Promise<User>{
         return new Promise( (resolve, reject) =>{
-            Database.getInstance().query(`${SELECT} ${EVERYTHING} ${FROM} ${DATABASE} ${WHERE} ${DATABASE}.email = "${email}"`)
+            new Database().query(`${SELECT} ${EVERYTHING} ${FROM} ${DATABASE} ${WHERE} ${DATABASE}.email = "${email}"`)
             .then(result =>{
                 let response = JSON.parse(JSON.stringify(result))[0];
                 console.log(response)
@@ -26,7 +26,7 @@ export default class UserRepository {
 
     public static async insertUser(user : User){
         return new Promise( (resolve, reject) =>{
-            Database.getInstance().query(`${CALL} ${PROCEDURE}("${user.getEmail()}","${user.getPassword()}","${user.getFirstName()}","${user.getLastName()}","${user.getBirthdate()}","${user.getRole()}")`)
+            new Database().query(`${CALL} ${PROCEDURE}("${user.getEmail()}","${user.getPassword()}","${user.getFirstName()}","${user.getLastName()}","${user.getBirthdate()}","${user.getRole()}")`)
             .then((results)=> {
                 console.log(results)
                 resolve()

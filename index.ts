@@ -17,7 +17,7 @@ app.get( "/", ( req, res ) => {
     })
 } );
 
-Database.getInstance().query('SELECT * from user;').then(results => console.log("results: ", results)).catch(err => console.log("Err: ", err));
+new Database().query('SELECT * from user;').then(results => console.log("results: ", results)).catch(err => console.log("Err: ", err));
 
 // start the express server
 app.listen( port, () => {
