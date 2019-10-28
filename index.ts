@@ -1,11 +1,13 @@
 import express from "express";
 import cors from "cors";
+import Database from './clients/database'
 
 const app = express();
 const port = 3000; // default port to listen
 
 // Change this URL before going live PROD
 app.use(cors({origin: 'http://localhost:4200'}));
+app.use('/',require('./router/router'))
 
 // define a route handler for the default home page
 app.get( "/", ( req, res ) => {
@@ -14,6 +16,8 @@ app.get( "/", ( req, res ) => {
         message : "Hello World!"
     })
 } );
+
+Database.getInstance().query('SELECT * from user;').then(results => console.log("results: ", results)).catch(err => console.log("Err: ", err));
 
 // start the express server
 app.listen( port, () => {
