@@ -11,3 +11,5 @@ app.post('/', verifyToken, (req, res) => {
 })
 
 module.exports = app;
+
+//call new_event(description, type, start, end, admin_id, user_id)

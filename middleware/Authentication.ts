@@ -12,11 +12,13 @@ export const verifyToken = ( req:express.Request, res:express.Response, next:Fun
   const token = <string>req.headers["auth"];
 
   try {
-    res.locals.user = <any>jwt.verify(token, SEED);
-    console.log(res.locals.user)
+    let desencrypted = <any>jwt.verify(token, SEED);
+    res.locals.user = desencrypted.user
   } catch (error) {
     //If token is not valid, respond with 401 (unauthorized)
-    res.status(401).send();
+    res.status(401).send({
+      message: "Authentication has failed"
+    });
     return;
   }
   

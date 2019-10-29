@@ -38,15 +38,12 @@ app.post('/', (req, res) =>{
           }
       
           let token = jwt.sign({
-            usuario: {
-                email : email,
-                role : result.getRole()
-            }
+            user : result
           }, SEED, {expiresIn: '48h' })
       
           res.json({
             ok: true,
-            usuario: {
+            user: {
                 email : email,
                 role : result.getRole()
             },

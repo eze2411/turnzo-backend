@@ -20,7 +20,6 @@ export default class Database {
     }
 
     async query(query : string) {
-
         return new Promise( (resolve, reject) =>{
             this.connection.query(query, function (error, results, fields) {
 

@@ -8,25 +8,29 @@ const DATABASE = "user"
 const WHERE = 'WHERE'
 const CALL = 'CALL'
 
-const PROCEDURE = 'new_user'
+const NEW_USER_PROCEDURE = 'new_user'
+const FIND_USER_PROCEDURE = 'find_user'
 
 export default class UserRepository {
 
     public static async findByEmail(email : string) : Promise<User>{
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${SELECT} ${EVERYTHING} ${FROM} ${DATABASE} ${WHERE} ${DATABASE}.email = "${email}"`)
+            new Database().query(`${CALL} ${FIND_USER_PROCEDURE}("${email}")`)
             .then(result =>{
-                let response = JSON.parse(JSON.stringify(result))[0];
-                console.log(response)
-                let user = new User(response.id, response.email, response.pass, null, null,null,response.role)
-                resolve(user)    
+                try{
+                    let response = JSON.parse(JSON.stringify(result))[0][0]
+                    let user = new User(response.id, response.email, response.password, response.firstname, response.lastname, response.birthdate, response.role)
+                    console.log(user)
+                    resolve(user)
+                       
+                }catch(err){reject(err)}
             }).catch(err => reject(err))
         })
     }
 
     public static async insertUser(user : User){
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${CALL} ${PROCEDURE}("${user.getEmail()}","${user.getPassword()}","${user.getFirstName()}","${user.getLastName()}","${user.getBirthdate()}","${user.getRole()}")`)
+            new Database().query(`${CALL} ${NEW_USER_PROCEDURE}("${user.getEmail()}","${user.getPassword()}","${user.getFirstName()}","${user.getLastName()}","${user.getBirthdate()}","${user.getRole()}")`)
             .then((results)=> {
                 console.log(results)
                 resolve()
@@ -36,3 +40,5 @@ export default class UserRepository {
     }
 
 }
+
+//call find_user(email)
