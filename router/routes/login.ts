@@ -45,6 +45,9 @@ app.post('/', (req, res) =>{
             ok: true,
             user: {
                 email : email,
+                firstname : result.getFirstName(),
+                lastname : result.getLastName(),
+                birthday : result.getBirthdate(),
                 role : result.getRole()
             },
             token

@@ -31,8 +31,8 @@ app.post('/', (req, res) =>{
         res.status(200).json({
             status : 'OK',
             email: user.getEmail(),
-            firstName : user.getFirstName(),
-            lastName : user.getLastName(),
+            firstname : user.getFirstName(),
+            lastname : user.getLastName(),
             birthdate : user.getBirthdate(),
             role: user.getRole()
         })
