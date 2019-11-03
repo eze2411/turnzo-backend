@@ -1,5 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import express = require('express');
+import User from "../DTO/User";
 
 //==================================
 //     Verificación del token
@@ -23,4 +24,23 @@ export const verifyToken = ( req:express.Request, res:express.Response, next:Fun
   }
   
   next();
+}
+
+//==================================
+//     Verificación del rol
+//==================================
+export const verifyAdminRole = (req:express.Request, res:express.Response, next:Function ) =>{
+
+  let user = res.locals.user
+
+  if(user.role === 'ADMIN'){
+    next();
+  }else {
+    res.status(401).json({
+      ok: false,
+      err: {
+        message: 'You are not allow, please log in with the proper user'
+      }
+    })
+  }
 }

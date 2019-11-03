@@ -3,17 +3,17 @@ export default class Event{
     private id : number | null
     private description : string | null
     private type : string | null
-    private adminId : number | null
-    private userId : number | null
+    private origin : string | null
+    private destiny : string | null
     private start : Date | null
     private end : Date | null
 
-    constructor(id : number | null, description : string | null, type : string | null, adminId : number | null, userId : number | null, start : Date | null, end : Date | null){
+    constructor(id : number | null, description : string | null, type : string | null, origin : string | null, destiny : string | null, start : Date | null, end : Date | null){
         this.id = id
         this.description = description
         this.type = type
-        this.adminId = adminId
-        this.userId = userId
+        this.origin = origin
+        this.destiny = destiny
         this.start = start
         this.end = end
     }
@@ -30,12 +30,12 @@ export default class Event{
         return this.type
     }
 
-    public getAdminId(){
-        return this.adminId
+    public getOrigin(){
+        return this.origin
     }
 
-    public getUserId(){
-        return this.userId
+    public getDestiny(){
+        return this.destiny
     }
 
     public getStart(){
@@ -58,12 +58,12 @@ export default class Event{
         this.type = type
     }
 
-    public setAdminId(adminId : number){
-        this.adminId = adminId
+    public setOrigin(origin : string){
+        this.origin = origin
     }
 
-    public setUserId(userId : number){
-        this.userId = userId
+    public setDestiny(destiny : string){
+        this.destiny = destiny
     }
 
     public setStart(start : Date){
