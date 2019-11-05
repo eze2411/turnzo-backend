@@ -1,11 +1,6 @@
 import Database from '../clients/database'
 import User from '../DTO/User'
 
-const SELECT = 'SELECT'
-const EVERYTHING = '*'
-const FROM = 'FROM'
-const DATABASE = "user"
-const WHERE = 'WHERE'
 const CALL = 'CALL'
 
 const NEW_USER_PROCEDURE = 'new_user'

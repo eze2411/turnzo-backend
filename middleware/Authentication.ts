@@ -1,6 +1,5 @@
 import * as jwt from "jsonwebtoken";
 import express = require('express');
-import User from "../DTO/User";
 
 //==================================
 //     Verificación del token

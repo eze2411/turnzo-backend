@@ -2,7 +2,6 @@ import express from 'express'
 import { verifyToken, verifyAdminRole }  from '../../middleware/Authentication' 
 import EventRepository from './../../repository/EventRepository'
 import Event from '../../DTO/Event'
-import User from '../../DTO/User'
 
 const app = express()
 

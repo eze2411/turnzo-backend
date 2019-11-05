@@ -1,8 +1,5 @@
 import Database from '../clients/database'
-import User from '../DTO/User'
 import Event from '../DTO/Event'
-import { resolve } from 'dns'
-import { reject } from 'q'
 
 const CALL = 'CALL'
 const NEW_EVENT_PROCEDURE = 'new_event'
