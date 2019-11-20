@@ -2,8 +2,6 @@ import mysql from 'mysql'
 import { disconnect } from 'cluster'
 
 export default class Database {
-    private static _instance : Database
-
     private connection : mysql.Connection
 
     private static HOST : string = 'turnzo-dev.cumg0vjkzfqu.us-east-2.rds.amazonaws.com'
@@ -11,7 +9,7 @@ export default class Database {
     private static PASSWORD : string = '46bi]MhHUM.^0Uyn'
     private static DATABASE : string = 'turnzo'
     
-    private constructor(){
+    public constructor(){
         this.connection = mysql.createConnection({
             host     : Database.HOST,
             user     : Database.USER,
@@ -21,15 +19,7 @@ export default class Database {
         });
     }
 
-    static getInstance(){
-        if(!this._instance){
-            this._instance = new Database()
-        }
-        return this._instance
-    }
-
     async query(query : string) {
-
         return new Promise( (resolve, reject) =>{
             this.connection.query(query, function (error, results, fields) {
 

@@ -8,13 +8,13 @@ export default class User {
     private role : string | null
 
     public constructor(id : number | null, email : string | null, password : string | null, firstName : string | null, lastName : string | null, birthdate : string | null, role : string | null){
-         (id) ? this.id = id : this.id = null;
-         (email) ? this.email = email : this.email = null;
-         (password) ? this.password = password : this.password = null;
-         (firstName) ? this.firstName = firstName : this.firstName = null;
-         (lastName) ? this.lastName = lastName : this.lastName = null;
-         (birthdate) ? this.birthdate =  birthdate : this.birthdate = null;
-         (role) ? this.role = role : this.role = null;
+        this.id = id
+        this.email = email
+        this.password = password
+        this.firstName = firstName
+        this.lastName = lastName
+        this.birthdate =  birthdate
+        this.role = role
     }
 
     //Getters
