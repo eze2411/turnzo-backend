@@ -1,10 +1,12 @@
 import Database from '../clients/database'
 import User from '../DTO/User'
+import { reject } from 'q'
 
 const CALL = 'CALL'
 
 const NEW_USER_PROCEDURE = 'new_user'
 const FIND_USER_PROCEDURE = 'find_user'
+const UPDATE_USER_PROCEDURE = 'update_user'
 
 export default class UserRepository {
 
@@ -32,6 +34,17 @@ export default class UserRepository {
             })
             .catch(err => reject(err))
         }) 
+    }
+
+    public static async updateUser(user : User){
+        return new Promise((resolve, reject) => {
+            new Database().query(`${CALL} ${UPDATE_USER_PROCEDURE}("${user.getEmail()}","${user.getFirstName()}","${user.getLastName()}","${user.getBirthdate()}")`)
+            .then((result) => {
+                console.log(result)
+                resolve()
+            })
+            .catch(err => reject(err))
+        })
     }
 
 }
