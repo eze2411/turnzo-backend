@@ -2,6 +2,7 @@ import express from 'express'
 import bcrypt from 'bcrypt'
 import User from '../../DTO/User'
 import UserRepository from '../../repository/UserRepository'
+import { verifyToken, verifyAdminRole }  from '../../middleware/Authentication' 
 
 const app = express()
 
@@ -59,6 +60,31 @@ app.get('/', (req, res) =>{
     let password = req.body.password
 
     console.log(email,password);
+})
+
+app.put('/', [verifyToken], (req :express.Request, res :express.Response) =>{
+    let user = res.locals.user;
+    let body = req.body
+    if (!body.firstname || !body.lastname || !body.birthdate){
+        res.status(400).json({
+            error: "You must provide all the params."
+        });
+    }else{
+        let updatedUser = new User(user.id,user.email,user.password,body.firstname, body.lastname, body.birthdate, user.role)
+        UserRepository.updateUser(updatedUser)
+        .then(()=>{
+            res.status(200).json({
+                status : 'OK',
+                message : 'User updated successfully'
+            })
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                error: "There was an error while creating the user"        
+            }) 
+        })
+    }
 })
 
 module.exports = app;
