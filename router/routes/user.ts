@@ -2,7 +2,7 @@ import express from 'express'
 import bcrypt from 'bcrypt'
 import User from '../../DTO/User'
 import UserRepository from '../../repository/UserRepository'
-import { verifyToken, verifyAdminRole }  from '../../middleware/Authentication' 
+import { verifyToken }  from '../../middleware/Authentication' 
 
 const app = express()
 
@@ -85,6 +85,21 @@ app.put('/', [verifyToken], (req :express.Request, res :express.Response) =>{
             }) 
         })
     }
+})
+
+app.get('/all', [verifyToken], (req :express.Request, res :express.Response) =>{
+    UserRepository.getUsers()
+    .then((results) =>{
+        res.status(200).json({
+            results : results
+        })
+    })
+    .catch((err)=>{
+        console.log(err);
+        res.status(500).json({
+            error: "There was an error while creating the user"        
+        }) 
+    })
 })
 
 module.exports = app;

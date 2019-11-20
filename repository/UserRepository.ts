@@ -1,12 +1,13 @@
 import Database from '../clients/database'
 import User from '../DTO/User'
-import { reject } from 'q'
 
 const CALL = 'CALL'
 
 const NEW_USER_PROCEDURE = 'new_user'
 const FIND_USER_PROCEDURE = 'find_user'
 const UPDATE_USER_PROCEDURE = 'update_user'
+const GET_ALL_USERS = 'get_users'
+const GET_ALL_ADMINS = 'get_admins'
 
 export default class UserRepository {
 
@@ -47,6 +48,28 @@ export default class UserRepository {
         })
     }
 
-}
+    public static async getUsers(){
+        return new Promise((resolve, reject) => {
+            new Database().query(`${CALL} ${GET_ALL_USERS}()`)
+            .then((results) => {
+                let response = JSON.parse(JSON.stringify(results))[0]
+                console.log(response);
+                resolve(response)
+            })
+            .catch(err => reject(err))
+        })
+    }
 
-//call find_user(email)
+    public static async getAdmins(){
+        return new Promise((resolve, reject) => {
+            new Database().query(`${CALL} ${GET_ALL_ADMINS}()`)
+            .then((results) => {
+                let response = JSON.parse(JSON.stringify(results))[0]
+                console.log(response);
+                resolve(response)
+            })
+            .catch(err => reject(err))
+        })
+    }
+
+}
