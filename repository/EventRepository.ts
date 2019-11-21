@@ -5,6 +5,9 @@ const CALL = 'CALL'
 const NEW_EVENT_PROCEDURE = 'new_event'
 const ALL_EVENTS_PROCEDURE = 'get_all_events'
 const NEW_LOCK_PROCEDURE = 'new_lock'
+const UPDATE_EVENT_PROCEDURE = 'update_event'
+const DELETE_EVENT_PROCEDURE = 'delete_event'
+const FIND_BY_ID = 'find_event'
 
 
 export default class EventRepository {
@@ -15,6 +18,18 @@ export default class EventRepository {
             .then(result => {
                 console.log(result)
                 resolve()
+            })
+            .catch(err => reject(err))
+        })
+    }
+
+    public static async findById(id: number){
+        return new Promise( (resolve, reject) =>{
+            new Database().query(`${CALL} ${FIND_BY_ID}("${id}")`)
+            .then(result => {
+                let response = JSON.parse(JSON.stringify(result))[0][0]
+                console.log(response)
+                resolve(response)
             })
             .catch(err => reject(err))
         })
@@ -42,4 +57,25 @@ export default class EventRepository {
         })
     }
 
+    public static async updateEvent(event : Event){
+        return new Promise( (resolve, reject) =>{
+            new Database().query(`${CALL} ${UPDATE_EVENT_PROCEDURE}("${event.getId()}","${event.getDescription()}","${event.getStart()}","${event.getEnd()}")`)
+            .then(result => {
+                console.log(result)
+                resolve()
+            })
+            .catch(err => reject(err))
+        })
+    }
+
+    public static async deleteEvent(id : number){
+        return new Promise( (resolve, reject) =>{
+            new Database().query(`${CALL} ${DELETE_EVENT_PROCEDURE}("${id}")`)
+            .then(result => {
+                console.log(result)
+                resolve()
+            })
+            .catch(err => reject(err))
+        })
+    }
 }
