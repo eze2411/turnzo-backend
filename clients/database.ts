@@ -25,9 +25,9 @@ export default class Database {
 
                 if (error) 
                     reject(error);
-
+                    
+                disconnect()
                 resolve(results)
-                disconnect(); 
             })
         })
     }

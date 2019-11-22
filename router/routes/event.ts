@@ -93,8 +93,8 @@ app.put('/', [verifyToken], (req :express.Request, res :express.Response) => {
     })
 })
 
-app.delete('/', [verifyToken], (req :express.Request, res :express.Response) => {
-    let id = req.body.id
+app.delete('/:id', [verifyToken], (req :express.Request, res :express.Response) => {
+    let id = Number(req.params.id)
     let user = res.locals.user
 
     if (!id) {
