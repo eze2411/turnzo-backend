@@ -47,7 +47,7 @@ app.post('/', (req, res) =>{
                 email : email,
                 firstname : result.getFirstName(),
                 lastname : result.getLastName(),
-                birthday : result.getBirthdate(),
+                birthdate : result.getBirthdate(),
                 role : result.getRole()
             },
             token

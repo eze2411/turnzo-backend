@@ -48,16 +48,26 @@ app.post('/', (req, res) =>{
 });
 
 app.get('/', [verifyToken], (req :express.Request, res :express.Response) =>{
-    res.status(200).json({
-        status : 'OK',
-        user : {
-            'email': res.locals.user.email,
-            'firstname': res.locals.user.firstName,
-            'lastname': res.locals.user.lastName,
-            'birthdate': res.locals.user.birthdate,
-            'role': res.locals.user.role
-        }
-    });
+    UserRepository.findByEmail(res.locals.user.email)
+        .then(result=>{
+            res.status(200).json({
+                status : 'OK',
+                user : {
+                    'id': result.getId(),
+                    'email': result.getEmail(),
+                    'firstname': result.getFirstName(),
+                    'lastname': result.getLastName(),
+                    'birthdate': result.getBirthdate(),
+                    'role': result.getRole()
+                }
+            })
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                error: "There was an error while creating the user"
+            })
+        });
 });
 
 app.post('/update', [verifyToken], (req :express.Request, res :express.Response) =>{
