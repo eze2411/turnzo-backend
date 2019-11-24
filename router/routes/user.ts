@@ -4,18 +4,18 @@ import User from '../../DTO/User'
 import UserRepository from '../../repository/UserRepository'
 import { verifyToken }  from '../../middleware/Authentication' 
 
-const app = express()
+const app = express();
 
 const roles = ['ADMIN', 'USER', 'MEDIC'];
 
-app.use(express.json()) // for parsing application/json
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.post('/', (req, res) =>{
 
-    let email = req.body.email
-    let role = req.body.role
-    let hasRole = roles.includes(role)
+    let email = req.body.email;
+    let role = req.body.role;
+    let hasRole = roles.includes(role);
    
     if(!email || !req.body.firstName || !req.body.lastName || !req.body.birthdate || !req.body.password || !hasRole){
         res.status(400).json({
@@ -23,7 +23,7 @@ app.post('/', (req, res) =>{
         });
     }else{
         //Encripted password
-    let password = bcrypt.hashSync(req.body.password,10)
+    let password = bcrypt.hashSync(req.body.password,10);
 
     let user : User = new User(null,email,password,req.body.firstName,req.body.lastName, req.body.birthdate, role)
     UserRepository.insertUser(user)
@@ -45,24 +45,22 @@ app.post('/', (req, res) =>{
         })
     });
     }
-})
+});
 
-app.get('/', (req, res) =>{
+app.get('/', [verifyToken], (req :express.Request, res :express.Response) =>{
+    res.status(200).json({
+        status : 'OK',
+        user : {
+            'email': res.locals.user.email,
+            'firstname': res.locals.user.firstName,
+            'lastname': res.locals.user.lastName,
+            'birthdate': res.locals.user.birthdate,
+            'role': res.locals.user.role
+        }
+    });
+});
 
-    let email = req.body.email
-    if(!email){
-        res.status(400).json({
-            error: "You must provide a email."
-        });
-    }
-
-    //Now you must check on the SQL that the email exists, if it exists, return the entire register
-    let password = req.body.password
-
-    console.log(email,password);
-})
-
-app.put('/', [verifyToken], (req :express.Request, res :express.Response) =>{
+app.post('/update', [verifyToken], (req :express.Request, res :express.Response) =>{
     let user = res.locals.user;
     let body = req.body
     if (!body.firstname || !body.lastname || !body.birthdate){
@@ -85,7 +83,7 @@ app.put('/', [verifyToken], (req :express.Request, res :express.Response) =>{
             }) 
         })
     }
-})
+});
 
 app.get('/all', [verifyToken], (req :express.Request, res :express.Response) =>{
     UserRepository.getUsers()
@@ -100,6 +98,6 @@ app.get('/all', [verifyToken], (req :express.Request, res :express.Response) =>{
             error: "There was an error while creating the user"        
         }) 
     })
-})
+});
 
 module.exports = app;
