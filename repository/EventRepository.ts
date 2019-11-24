@@ -4,6 +4,8 @@ import Event from '../DTO/Event'
 const CALL = 'CALL'
 const NEW_EVENT_PROCEDURE = 'new_event'
 const ALL_EVENTS_PROCEDURE = 'get_all_events'
+const ADMIN_EVENTS_PROCEDURE = 'get_admin_events'
+const USER_EVENTS_PROCEDURE = 'get_user_events   '
 const NEW_LOCK_PROCEDURE = 'new_lock'
 const UPDATE_EVENT_PROCEDURE = 'update_event'
 const DELETE_EVENT_PROCEDURE = 'delete_event'
@@ -45,6 +47,30 @@ export default class EventRepository {
             .catch(err => reject(err))
         })
     }
+
+    public static async getAdminEvents(admin: string){
+        return new Promise( (resolve, reject) => {
+            new Database().query(`${CALL} ${ADMIN_EVENTS_PROCEDURE}('${admin}')`)
+                .then(results => {
+                    console.log(results)
+                    resolve(results)
+                })
+                .catch(err => reject(err))
+        })
+    }
+
+    public static async getUserEvents(admin: string, user: string){
+        return new Promise( (resolve, reject) => {
+            new Database().query(`${CALL} ${USER_EVENTS_PROCEDURE}('${admin}', '${user}')`)
+                .then(results => {
+                    console.log(results)
+                    resolve(results)
+                })
+                .catch(err => reject(err))
+        })
+    }
+
+
 
     public static async insertLock(start :Date, end : Date, admin : string){
         return new Promise( (resolve, reject) =>{

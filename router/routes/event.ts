@@ -140,19 +140,44 @@ app.post('/delete', [verifyToken], (req :express.Request, res :express.Response)
     })
 })
 
-app.get('/all', verifyToken, (req :express.Request, res :express.Response) => {
-    EventRepository.getAll()
-    .then( results => {
-        res.status(200).json({
-            events : results
-        })
-    })
-    .catch(err => {
-        console.log(err)
-        res.status(500).json({
-            message : 'There was an error while trying to get events'
-        })
-    })
+app.get('/admin', verifyToken, (req :express.Request, res :express.Response) => {
+    console.log(res.locals.user)
+
+    if(res.locals.user.role == 'ADMIN'){
+        EventRepository.getAdminEvents(res.locals.user.email)
+            .then( results => {
+                res.status(200).json({
+                    events : results
+                })
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({
+                    message : 'There was an error while trying to get events'
+                })
+            })
+    }
+})
+
+app.get('/user/:admin', verifyToken, (req :express.Request, res :express.Response) => {
+    let admin = req.params.admin;
+    console.log(res.locals.user);
+    if(res.locals.user.role == 'USER'){
+        console.log("ASDASD");
+        console.log(admin);
+        EventRepository.getUserEvents(admin, res.locals.user.email)
+            .then( results => {
+                res.status(200).json({
+                    events : results
+                })
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({
+                    message : 'There was an error while trying to get events'
+                })
+            })
+    }
 })
 
 module.exports = app;
