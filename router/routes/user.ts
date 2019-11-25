@@ -110,4 +110,40 @@ app.get('/all', [verifyToken], (req :express.Request, res :express.Response) =>{
     })
 });
 
+app.put('/resetPassword', [verifyToken], (req :express.Request, res :express.Response) =>{
+    let previousPassword = req.body.previouspassword
+    let newPassword = req.body.newpassword
+
+    let user = res.locals.user
+
+    UserRepository.findByEmail(user.email)
+    .then(result => {
+        if ( !bcrypt.compareSync(previousPassword, result.getPassword()!) ){
+            return res.status(400).json({
+              ok: false,
+              err: {
+              message: 'You had been provided a wrong password'
+              }
+            })
+        }
+
+        //Encripted password
+        let encryptedPassword = bcrypt.hashSync(newPassword,10);
+
+        UserRepository.updatePassword(user.email, encryptedPassword)
+        .then(() => {
+            res.status(200).json({
+                message : 'Password has been updated successfully.'
+            })
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                error: "There was an error while creating the user"        
+            }) 
+        })
+        
+    })
+})
+
 module.exports = app;
