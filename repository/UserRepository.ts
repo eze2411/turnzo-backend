@@ -8,6 +8,7 @@ const FIND_USER_PROCEDURE = 'find_user'
 const UPDATE_USER_PROCEDURE = 'update_user'
 const GET_ALL_USERS = 'get_users'
 const GET_ALL_ADMINS = 'get_admins'
+const UPDATE_PASSWORD = 'reset_password'
 
 export default class UserRepository {
 
@@ -80,6 +81,20 @@ export default class UserRepository {
                 let response = JSON.parse(JSON.stringify(results))[0]
                 console.log(response);
                 resolve(response)
+            })
+            .catch(err => reject(err))
+
+            databaseConnection.disconnect()
+        })
+    }
+
+    public static async updatePassword(email : string, newPassword : string){
+        return new Promise((resolve, reject) => {
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${UPDATE_PASSWORD}("${email}","${newPassword}")`)
+            .then((results) => {
+                console.log(results);
+                resolve()
             })
             .catch(err => reject(err))
 
