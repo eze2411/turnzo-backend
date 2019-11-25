@@ -96,7 +96,7 @@ app.post('/turnzo/manual', verifyToken, (req :express.Request, res :express.Resp
         })
 })
 
-app.post('/update', [verifyToken], (req :express.Request, res :express.Response) => {
+app.put('/', [verifyToken], (req :express.Request, res :express.Response) => {
     let description = req.body.description
     let start = req.body.start
     let end = req.body.end

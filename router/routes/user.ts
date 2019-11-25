@@ -70,7 +70,7 @@ app.get('/', [verifyToken], (req :express.Request, res :express.Response) =>{
         });
 });
 
-app.post('/update', [verifyToken], (req :express.Request, res :express.Response) =>{
+app.put('/', [verifyToken], (req :express.Request, res :express.Response) =>{
     let user = res.locals.user;
     let body = req.body
     if (!body.firstname || !body.lastname || !body.birthdate){
