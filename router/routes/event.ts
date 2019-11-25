@@ -123,8 +123,9 @@ app.post('/update', [verifyToken], (req :express.Request, res :express.Response)
     })
 })
 
-app.post('/delete', [verifyToken], (req :express.Request, res :express.Response) => {
-    let id = req.body.id
+app.delete('/:id', [verifyToken], (req :express.Request, res :express.Response) => {
+    let param = req.params.id
+    let id = Number(param)
     let user = res.locals.user
 
     if (!id) {
