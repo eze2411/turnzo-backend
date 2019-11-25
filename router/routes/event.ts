@@ -163,8 +163,6 @@ app.get('/user/:admin', verifyToken, (req :express.Request, res :express.Respons
     let admin = req.params.admin;
     console.log(res.locals.user);
     if(res.locals.user.role == 'USER'){
-        console.log("ASDASD");
-        console.log(admin);
         EventRepository.getUserEvents(admin, res.locals.user.email)
             .then( results => {
                 res.status(200).json({
