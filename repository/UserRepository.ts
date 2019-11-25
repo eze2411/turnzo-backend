@@ -13,7 +13,8 @@ export default class UserRepository {
 
     public static async findByEmail(email : string) : Promise<User>{
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${CALL} ${FIND_USER_PROCEDURE}("${email}")`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${FIND_USER_PROCEDURE}("${email}")`)
             .then(result =>{
                 try{
                     let response = JSON.parse(JSON.stringify(result))[0][0]
@@ -23,52 +24,66 @@ export default class UserRepository {
                        
                 }catch(err){reject(err)}
             }).catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 
     public static async insertUser(user : User){
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${CALL} ${NEW_USER_PROCEDURE}("${user.getEmail()}","${user.getPassword()}","${user.getFirstName()}","${user.getLastName()}","${user.getBirthdate()}","${user.getRole()}")`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${NEW_USER_PROCEDURE}("${user.getEmail()}","${user.getPassword()}","${user.getFirstName()}","${user.getLastName()}","${user.getBirthdate()}","${user.getRole()}")`)
             .then((results)=> {
                 console.log(results)
                 resolve()
             })
             .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         }) 
     }
 
     public static async updateUser(user : User){
         return new Promise((resolve, reject) => {
-            new Database().query(`${CALL} ${UPDATE_USER_PROCEDURE}("${user.getEmail()}","${user.getFirstName()}","${user.getLastName()}","${user.getBirthdate()}")`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${UPDATE_USER_PROCEDURE}("${user.getEmail()}","${user.getFirstName()}","${user.getLastName()}","${user.getBirthdate()}")`)
             .then((result) => {
                 console.log(result)
                 resolve()
             })
             .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 
     public static async getUsers(){
         return new Promise((resolve, reject) => {
-            new Database().query(`${CALL} ${GET_ALL_USERS}()`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${GET_ALL_USERS}()`)
             .then((results) => {
                 let response = JSON.parse(JSON.stringify(results))[0]
                 console.log(response);
                 resolve(response)
             })
             .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 
     public static async getAdmins(){
         return new Promise((resolve, reject) => {
-            new Database().query(`${CALL} ${GET_ALL_ADMINS}()`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${GET_ALL_ADMINS}()`)
             .then((results) => {
                 let response = JSON.parse(JSON.stringify(results))[0]
                 console.log(response);
                 resolve(response)
             })
             .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 

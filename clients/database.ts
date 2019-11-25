@@ -48,7 +48,9 @@ export default class Database {
             this.connection.end((err)=>{
                 if(err) {
                     reject(err)
+                    console.log(err)
                 }
+                console.log("The connection to database has been closed")
                 resolve();
             })
         })
