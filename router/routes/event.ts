@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 app.post('/lock', [verifyToken, verifyAdminRole], (req :express.Request, res :express.Response) => {
     let start = req.body.start
     let end = req.body.end
+    let description = req.body.description
 
     if(!start || !end){
         res.status(400).json({
@@ -23,7 +24,7 @@ app.post('/lock', [verifyToken, verifyAdminRole], (req :express.Request, res :ex
     let user = res.locals.user;
     console.log(user)
 
-    EventRepository.insertLock(start,end,user.email!)
+    EventRepository.insertLock(description, start,end, user.email!)
     .then(() => {
         res.status(200).json({
             message : "Lock was succesfully insert."

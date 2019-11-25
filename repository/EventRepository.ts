@@ -72,9 +72,9 @@ export default class EventRepository {
 
 
 
-    public static async insertLock(start :Date, end : Date, admin : string){
+    public static async insertLock(description:string, start :Date, end : Date, admin : string){
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${CALL} ${NEW_LOCK_PROCEDURE}("${start}","${end}","${admin}")`)
+            new Database().query(`${CALL} ${NEW_LOCK_PROCEDURE}("${description}","${start}","${end}","${admin}")`)
             .then(result => {
                 console.log(result)
                 resolve()
