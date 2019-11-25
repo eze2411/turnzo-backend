@@ -67,6 +67,35 @@ app.post('/turnzo', verifyToken, (req :express.Request, res :express.Response) =
     })
 })
 
+app.post('/turnzo/manual', verifyToken, (req :express.Request, res :express.Response) =>{
+
+    let description = req.body.description
+    let start = req.body.start
+    let end = req.body.end
+    let origin = req.body.origin
+    let destiny = res.locals.user.email
+
+    if (!description || !start || !end || !origin){
+        res.status(400).json({
+            message : "You must provide all the params."
+        })
+    }
+    let event = new Event(null,description,"TURNZO",origin,destiny,start,end)
+
+    EventRepository.insert(event)
+        .then(() => {
+            res.status(200).json({
+                message : "Event was succesfully insert."
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({
+                message : 'There was an error while trying to get events'
+            })
+        })
+})
+
 app.post('/update', [verifyToken], (req :express.Request, res :express.Response) => {
     let description = req.body.description
     let start = req.body.start
