@@ -16,57 +16,72 @@ export default class EventRepository {
 
     public static async insert(event : Event){
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${CALL} ${NEW_EVENT_PROCEDURE}("${event.getDescription()}","${event.getStart()}","${event.getEnd()}","${event.getOrigin()}","${event.getDestiny()}")`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${NEW_EVENT_PROCEDURE}("${event.getDescription()}","${event.getStart()}","${event.getEnd()}","${event.getOrigin()}","${event.getDestiny()}")`)
             .then(result => {
                 console.log(result)
                 resolve()
             })
             .catch(err => reject(err))
+            
+            databaseConnection.disconnect()
         })
     }
 
     public static async findById(id: number){
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${CALL} ${FIND_BY_ID}("${id}")`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${FIND_BY_ID}("${id}")`)
             .then(result => {
                 let response = JSON.parse(JSON.stringify(result))[0][0]
                 console.log(response)
                 resolve(response)
             })
             .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 
     public static async getAll(){
         return new Promise( (resolve, reject) => {
-            new Database().query(`${CALL} ${ALL_EVENTS_PROCEDURE}()`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${ALL_EVENTS_PROCEDURE}()`)
             .then(results => {
                 console.log(results)
                 resolve(results)
             })
             .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 
     public static async getAdminEvents(admin: string){
         return new Promise( (resolve, reject) => {
-            new Database().query(`${CALL} ${ADMIN_EVENTS_PROCEDURE}('${admin}')`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${ADMIN_EVENTS_PROCEDURE}('${admin}')`)
                 .then(results => {
                     console.log(results)
                     resolve(results)
                 })
                 .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 
     public static async getUserEvents(admin: string, user: string){
         return new Promise( (resolve, reject) => {
-            new Database().query(`${CALL} ${USER_EVENTS_PROCEDURE}('${admin}', '${user}')`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${USER_EVENTS_PROCEDURE}('${admin}', '${user}')`)
                 .then(results => {
                     console.log(results)
                     resolve(results)
                 })
                 .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 
@@ -74,34 +89,43 @@ export default class EventRepository {
 
     public static async insertLock(description:string, start :Date, end : Date, admin : string){
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${CALL} ${NEW_LOCK_PROCEDURE}("${description}","${start}","${end}","${admin}")`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${NEW_LOCK_PROCEDURE}("${description}","${start}","${end}","${admin}")`)
             .then(result => {
                 console.log(result)
                 resolve()
             })
             .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 
     public static async updateEvent(event : Event){
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${CALL} ${UPDATE_EVENT_PROCEDURE}("${event.getId()}","${event.getDescription()}","${event.getStart()}","${event.getEnd()}")`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${UPDATE_EVENT_PROCEDURE}("${event.getId()}","${event.getDescription()}","${event.getStart()}","${event.getEnd()}")`)
             .then(result => {
                 console.log(result)
                 resolve()
             })
             .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 
     public static async deleteEvent(id : number){
         return new Promise( (resolve, reject) =>{
-            new Database().query(`${CALL} ${DELETE_EVENT_PROCEDURE}("${id}")`)
+            const databaseConnection = new Database()
+            databaseConnection.query(`${CALL} ${DELETE_EVENT_PROCEDURE}("${id}")`)
             .then(result => {
                 console.log(result)
                 resolve()
             })
             .catch(err => reject(err))
+
+            databaseConnection.disconnect()
         })
     }
 }
