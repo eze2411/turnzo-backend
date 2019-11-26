@@ -5,7 +5,8 @@ const app = express();
 const port = 3000; // default port to listen
 
 // Change this URL before going live PROD
-app.use(cors({origin: 'http://localhost:4200'}));
+//app.use(cors({origin: 'http://localhost:4200'}));
+app.use(cors({origin: 'http://turnzo.herokuapp.com'}));
 app.use('/',require('./router/router'))
 
 // define a route handler for the default home page
